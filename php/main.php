@@ -5,8 +5,16 @@
 		//need to call some awesome url search function here
 		$links = getPageLink($reqUrl);
 		$img_links = getImgLinks($links);
+		
+		foreach ($img_links as $cacheLink){
+			$front = substr($cacheLink,0,26);
+			$end = substr($cacheLink,33);
+			$final = $front."/800x600/".$end;
+			echo $final;
+			echo "<br />";
+		}
 		echo "<pre>";
-		print_r($img_links);
+		//print_r($img_links);
 	}
 
 	//Provides an Array of Links
@@ -81,8 +89,14 @@
 				}
 			}
 		}
-		sort($arrLink);
-		return $arrLink;
+		
+		$matched[] = preg_grep('~(65x48)~i', $arrLink);
+		$matched_key = key($matched);
+
+		$photogal_link = $matched[$matched_key];
+
+		// sort($arrLink);
+		return $photogal_link;
 	}
 
 ?>

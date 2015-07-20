@@ -2,6 +2,17 @@
 	require 'download.php';
 	// require 'resize.php';
 
+
+	//JQUERY SHIT DON't TOUCH
+	$data = $_POST['asdf'];
+
+	if($data){
+		$stuff = sendToJS($data);
+
+		echo $stuff;
+	}
+	//JQUERY SHIT DON't TOUCH
+
 	if(isset($_POST['submit1'])){
 		$reqUrl = $_POST['url'];
 		
@@ -30,9 +41,12 @@
 			echo "<br />";
 			download_img($final, $name, $i);
 		}
+	}
 
-		// echo "<pre>";
-		//print_r($img_links);
+	function sendToJS($url){
+		$html=file_get_contents($url);
+
+		return $html;
 	}
 
 	//Provides an Array of Links

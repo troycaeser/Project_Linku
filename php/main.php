@@ -1,10 +1,13 @@
 <?php
+	require 'download.php';
+
 	if(isset($_POST['submit1'])){
 		$reqUrl = $_POST['url'];
 
 		//need to call some awesome url search function here
 		$links = getPageLink($reqUrl);
 		$img_links = getImgLinks($links);
+		// download_img($the_links_bro);
 		echo "<pre>";
 		print_r($img_links);
 	}

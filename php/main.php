@@ -4,11 +4,20 @@
 
 	if(isset($_POST['submit1'])){
 		$reqUrl = $_POST['url'];
-
+		
+		//create a new folder based on the url
+		$name = substr(strstr($reqUrl,'au/'),3);
+		if(file_exists ($name)):
+			else:
+			mkdir ("../temp/".$name, 0777);
+		endif;
+		
 		//need to call some awesome url search function here
 		$links = getPageLink($reqUrl);
 		$img_links = getImgLinks($links);
 		
+
+
 		$i = 0;
 		//filter & download
 		foreach ($img_links as $cacheLink){
@@ -17,10 +26,9 @@
 			$front = substr($cacheLink,0,26);
 			$end = substr($cacheLink,33);
 			$final = $front."/800x600/".$end;
-			echo $final;
-			echo "<br />";
 
-			download_img($final, $i);
+			echo "<br />";
+			download_img($final, $name, $i);
 		}
 
 		// echo "<pre>";

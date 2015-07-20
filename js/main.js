@@ -8,7 +8,7 @@ $(document).ready(function(){
 			{
 				input_url: input
 			})
-			.done(function(data){
+			.then(function(data){
 				try{
 					$('.temporary_output').html(data)
 				}catch(e){
@@ -37,10 +37,23 @@ $(document).ready(function(){
 						auction: auction_time
 					}
 
+					getJson(stuff);
+
 					console.log(agent);
 					console.log(stuff);
+
+					$('.temporary_output').children().remove();
 				}
-		});
+			})
+			.done(function(data){
+				console.log('done');
+			});
 	});
 	
+	function getJson(json){
+		$.post("php/main.php", json)
+			.done(function(data){
+				console.log(data);
+			});
+	}
 });

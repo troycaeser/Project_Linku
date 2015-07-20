@@ -10,6 +10,13 @@
 		echo $html;
 	}
 
+	$agency = $_POST['agency'];
+	$ppt_price = $_POST['ppt_price'];
+
+	if($ppt_price){
+		echo $ppt_price;
+	}
+
 	if(isset($_POST['submit1'])){
 		$reqUrl = $_POST['url'];
 		

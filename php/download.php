@@ -1,11 +1,11 @@
 <?php
 
-	function download_img($url){
+	function download_img($url, $name){
 		//get the file
 		$content = file_get_contents($url);
 
 		//save locally
-		$fp = fopen("../temp/1.jpg", 'wb');
+		$fp = fopen("../temp/".$name.".jpg", 'wb');
 		fwrite($fp, $content);
 		fclose($fp);
 	}

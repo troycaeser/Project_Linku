@@ -7,16 +7,22 @@
 		//need to call some awesome url search function here
 		$links = getPageLink($reqUrl);
 		$img_links = getImgLinks($links);
-		// download_img($the_links_bro);
 		
+		$i = 0;
+		//filter & download
 		foreach ($img_links as $cacheLink){
+			$i++;
+
 			$front = substr($cacheLink,0,26);
 			$end = substr($cacheLink,33);
 			$final = $front."/800x600/".$end;
 			echo $final;
 			echo "<br />";
+
+			download_img($final, $i);
 		}
-		echo "<pre>";
+
+		// echo "<pre>";
 		//print_r($img_links);
 	}
 

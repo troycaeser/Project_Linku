@@ -1,5 +1,6 @@
 <?php
 	require 'download.php';
+	// require 'resize.php';
 
 	if(isset($_POST['submit1'])){
 		$reqUrl = $_POST['url'];

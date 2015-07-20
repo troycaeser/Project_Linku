@@ -2,16 +2,13 @@
 	require 'download.php';
 	// require 'resize.php';
 
+	$request = $_POST['input_url'];
 
-	//JQUERY SHIT DON't TOUCH
-	// $data = $_POST['asdf'];
+	if($request){
+		$html = sendToJS($request);
 
-	// if($data){
-	// 	$stuff = sendToJS($data);
-
-	// 	echo $stuff;
-	// }
-	//JQUERY SHIT DON't TOUCH
+		echo $html;
+	}
 
 	if(isset($_POST['submit1'])){
 		$reqUrl = $_POST['url'];

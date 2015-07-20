@@ -3,8 +3,8 @@
 		$reqUrl = $_POST['url'];
 
 		//need to call some awesome url search function here
-		$links = getImgLinks($reqUrl);
-		// $img_links = getImgLinks($reqUrl);
+		$links = getPageLink($reqUrl);
+		$img_links = getImgLinks($links);
 		echo "<pre>";
 		print_r($img_links);
 	}
@@ -40,8 +40,14 @@
 				}
 			}
 		}
-		sort($arrLink);
-		return $arrLink;
+
+		$matched = preg_grep('~(photogal)~i', $arrLink);
+		$matched_key = key($matched);
+
+		$photogal_link = $matched[$matched_key];
+
+		// sort($arrLink);
+		return $photogal_link;
 	}
 
 	//Provides an Array of Image Src

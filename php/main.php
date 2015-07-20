@@ -4,13 +4,13 @@
 
 
 	//JQUERY SHIT DON't TOUCH
-	$data = $_POST['asdf'];
+	// $data = $_POST['asdf'];
 
-	if($data){
-		$stuff = sendToJS($data);
+	// if($data){
+	// 	$stuff = sendToJS($data);
 
-		echo $stuff;
-	}
+	// 	echo $stuff;
+	// }
 	//JQUERY SHIT DON't TOUCH
 
 	if(isset($_POST['submit1'])){

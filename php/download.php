@@ -11,7 +11,7 @@
 		fwrite($fp, $content);
 		fclose($fp);
 
-		resize_img("../temp/".$name.".jpg", $name);
+		resize_img("../temp/".$dir."/".$name.".jpg", $name, $dir);
 	}
 
 ?>

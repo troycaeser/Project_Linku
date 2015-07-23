@@ -1,24 +1,21 @@
 <?php
 	require 'download.php';
-	// require 'resize.php';
+	include 'json.php';
 
-	$request = $_POST['input_url'];
+	$reqUrl = $_POST['input_url'];
 
-	if($request){
-		$html = sendToJS($request);
+	if($reqUrl){
+		$html = sendToJS($reqUrl);
 
 		echo $html;
 	}
 
-	$agency = $_POST['agency'];
-	$ppt_price = $_POST['ppt_price'];
+	//this needs to be used somehow
+	checkCrawled();
 
-	if($ppt_price){
-		echo $ppt_price;
-	}
-
-	if(isset($_POST['submit1'])){
-		$reqUrl = $_POST['url'];
+	if(isset($reqUrl)){
+		// $reqUrl = $_POST['url'];
+		// $reqUrl = $_POST['input_url'];
 		
 		//create a new folder based on the url
 		$name = substr(strstr($reqUrl,'au/'),3);
@@ -30,8 +27,6 @@
 		//need to call some awesome url search function here
 		$links = getPageLink($reqUrl);
 		$img_links = getImgLinks($links);
-		
-
 
 		$i = 0;
 		//filter & download

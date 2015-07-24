@@ -12,6 +12,9 @@
 		$resizeObj -> saveImage('../temp/'.$dir."/".$name.'.jpg', 100);
 
 		//add watermark.
-		$resizeObj -> addWatermarks('../bin/chisholm_gamon/logo.png', '../temp/'.$dir."/".$name.'.jpg');
+		$resizeObj -> addWatermarks(
+			'../bin/chisholm_gamon/logo.png',
+			'../bin/chisholm_gamon/bottom.jpeg',
+			'../temp/'.$dir."/".$name.'.jpg');
 	}
 ?>

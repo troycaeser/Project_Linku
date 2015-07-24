@@ -203,25 +203,51 @@
 
 			## --------------------------------------------------------
 			
-			public function addWatermarks($stamps, $photo){
+			public function addWatermarks($logo, $bottom, $photo){
 
 				//LOGO
 				// Load the stamp and the photo to apply the watermark to
-				$stamp = imagecreatefrompng($stamps);
+				$stamp_bottom = imagecreatefromjpeg($bottom);
+				$stamp_logo = imagecreatefrompng($logo);
 				$im = imagecreatefromjpeg($photo);
 
-				// Set the margins for the stamp and get the height/width of the stamp image
+				// Set the margins for the stamp
 				$marge_right = 10;
 				$marge_bottom = 10;
-				$sx = imagesx($stamp);
-				$sy = imagesy($stamp);
+
+				//logo_height/width
+				$logo_x = imagesx($stamp_logo);
+				$logo_y = imagesy($stamp_logo);
+
+				//bottom_height/width
+				$bottom_x = imagesx($stamp_logo);
+				$bottom_y = imagesy($stamp_logo);
 
 				// Copy the stamp image onto our photo using the margin offsets and the photo 
 				// width to calculate positioning of the stamp. 
-				imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
+				imagecopy(
+					$im,
+					$stamp_logo,
+					imagesx($im) - $logo_x - $marge_right,
+					$marge_bottom,
+					0, 0,
+					imagesx($stamp_logo),
+					imagesy($stamp_logo));
 
 				// Output and free memory
 				imagejpeg($im, $photo, 100);
+
+				imagecopy(
+					$im,
+					$stamp_bottom,
+					0,
+					imagesy($im) - $logo_y,
+					0, 0,
+					imagesx($stamp_bottom),
+					imagesy($stamp_bottom));
+
+				imagejpeg($im, $photo, 100);
+
 				imagedestroy($im);
 			}
 

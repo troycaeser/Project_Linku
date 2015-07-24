@@ -9,20 +9,21 @@ $(document).ready(function(){
 				input_url: input
 			})
 			.then(function(data){
-				try{
-					$('.temporary_output').html(data)
-				}finally{
-					setJson();
+				var obj_links = {};
 
-					$('.temporary_output').children().remove();
-				}
+				$.each($.parseJSON(data), function(key, value){
+					console.log(key + ": " + value);
+					obj_links[key] = value;
+				});
+
+				getHTML(input, obj_links);
 			})
 			.done(function(data){
-				console.log('done');
+				console.info('links completed');
 			});
 	});
 
-	function setJson(){
+	function setJson(obj_links){
 		var bed = $('.rui-icon-bed').next().text();
 		var bath = $('.rui-icon-bath').next().text();
 		var car = $('.rui-icon-car').next().text();
@@ -45,7 +46,8 @@ $(document).ready(function(){
 			street: streetAddress,
 			suburb: addressLocality,
 			agency: agent,
-			auction: auction_time
+			auction: auction_time,
+			links: obj_links
 		}
 
 		console.log(json_data);
@@ -54,9 +56,28 @@ $(document).ready(function(){
 	}
 	
 	function getJson(json){
-		$.post("php/main.php", json)
-			.done(function(data){
+		$.post("php/download.php", json)
+			.then(function(data){
 				console.log(data);
+		});
+	}
+
+	function getHTML(input, obj_links){
+		$.post("php/json.php",
+		{
+			input_url: input
+		})
+		.then(function(data){
+			try{
+				$('.temporary_output').html(data);
+			}catch(e){
+				console.error(e);
+			}
+			finally{
+				setJson(obj_links);
+
+				$('.temporary_output').children().remove();
+			}
 		});
 	}
 });

@@ -203,28 +203,35 @@
 
 			## --------------------------------------------------------
 			
-			public function addWatermarks($logo, $bottom, $photo){
+			public function addWatermarks($logo, $bottom, $bed, $photo){
 
 				//LOGO
 				// Load the stamp and the photo to apply the watermark to
-				$stamp_bottom = imagecreatefromjpeg($bottom);
 				$stamp_logo = imagecreatefrompng($logo);
+				$stamp_bottom = imagecreatefromjpeg($bottom);
+				$stamp_bed = imagecreatefrompng($bed);
+				$stamp_bed_no = $bed_no;
+				// $font = '../bin/chisholm_gamon/museo500.ttf';
+
+
 				$im = imagecreatefromjpeg($photo);
+				$black = imagecolorallocate($im, 0, 0, 0);
 
 				// Set the margins for the stamp
-				$marge_right = 10;
-				$marge_bottom = 10;
+				$marge_right = 5;
+				$marge_bottom = 5;
 
 				//logo_height/width
 				$logo_x = imagesx($stamp_logo);
 				$logo_y = imagesy($stamp_logo);
 
 				//bottom_height/width
-				$bottom_x = imagesx($stamp_logo);
-				$bottom_y = imagesy($stamp_logo);
+				$bottom_x = imagesx($stamp_bottom);
+				$bottom_y = imagesy($stamp_bottom);
 
 				// Copy the stamp image onto our photo using the margin offsets and the photo 
 				// width to calculate positioning of the stamp. 
+				//add logo
 				imagecopy(
 					$im,
 					$stamp_logo,
@@ -234,18 +241,39 @@
 					imagesx($stamp_logo),
 					imagesy($stamp_logo));
 
-				// Output and free memory
-				imagejpeg($im, $photo, 100);
-
+				//add bottom
 				imagecopy(
 					$im,
 					$stamp_bottom,
 					0,
-					imagesy($im) - $logo_y,
+					imagesy($im) - $bottom_y,
 					0, 0,
 					imagesx($stamp_bottom),
 					imagesy($stamp_bottom));
 
+				//add bed
+				imagecopy(
+					$im,
+					$stamp_bed,
+					10,
+					imagesy($im) - $bottom_y,
+					0, 0,
+					imagesx($stamp_bed),
+					imagesy($stamp_bed));
+
+				//add bed_no
+				// imagettftext(
+				// 	$im,
+				// 	20,
+				// 	0,
+				// 	10,
+				// 	20,
+				// 	$black,
+				// 	$font,
+				// 	"4"
+				// 	);
+
+				// Output and free memory
 				imagejpeg($im, $photo, 100);
 
 				imagedestroy($im);

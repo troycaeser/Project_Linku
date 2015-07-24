@@ -1,32 +1,24 @@
 <?php
-	require 'download.php';
-	include 'json.php';
+	// require 'download.php';
+	// include 'json.php';
 
 	$reqUrl = $_POST['input_url'];
-
-	if($reqUrl){
-		$html = sendToJS($reqUrl);
-
-		echo $html;
-	}
-
-	//this needs to be used somehow
-	checkCrawled();
+	$folder_name = substr(strstr($reqUrl,'au/'),3);
 
 	if(isset($reqUrl)){
 		// $reqUrl = $_POST['url'];
 		// $reqUrl = $_POST['input_url'];
 		
 		//create a new folder based on the url
-		$name = substr(strstr($reqUrl,'au/'),3);
-		if(file_exists ($name)):
+		if(file_exists ($folder_name)):
 			else:
-			mkdir ("../temp/".$name, 0777);
+			mkdir ("../temp/".$folder_name, 0777);
 		endif;
 		
 		//need to call some awesome url search function here
 		$links = getPageLink($reqUrl);
 		$img_links = getImgLinks($links);
+		$modified_links;
 
 		$i = 0;
 		//filter & download
@@ -36,16 +28,12 @@
 			$front = substr($cacheLink,0,26);
 			$end = substr($cacheLink,33);
 			$final = $front."/800x600/".$end;
+			$modified_links[$i] = $final;
 
-			echo "<br />";
-			download_img($final, $name, $i);
+			// echo "<br />";
+			// download_img($final, $name, $i);
 		}
-	}
-
-	function sendToJS($url){
-		$html=file_get_contents($url);
-
-		return $html;
+		echo json_encode($modified_links);
 	}
 
 	//Provides an Array of Links

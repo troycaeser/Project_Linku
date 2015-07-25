@@ -1,18 +1,20 @@
 <?php
 	require 'resize.php';
-	include 'main.php';
+	// include 'main.php';
 	// download_img($final, $name, $i);
 
 	// $decoded_json = json_decode($_POST['links']);
 	// $stuff = json_decode($_POST['links']);
 	// echo $_POST['links'][3];
 	$url;
+	$reqUrl = $_POST['url'];
+	$final = substr(strstr($reqUrl,'au/'),3);
 
 	for($i = 1; $i<=count($_POST['links']); $i++){
 		$url = $_POST['links'][$i];
 		// echo $url;
 
-		download_img($url, $folder_name, $i);
+		download_img($url, $final, $i);
 	}
 
 	// function download_img($url, $name){

@@ -3,13 +3,13 @@
 	// include 'json.php';
 
 	$reqUrl = $_POST['input_url'];
-	$folder_name = substr(strstr($reqUrl,'au/'),3);
 
 	if(isset($reqUrl)){
 		// $reqUrl = $_POST['url'];
 		// $reqUrl = $_POST['input_url'];
 		
 		//create a new folder based on the url
+		$folder_name = substr(strstr($reqUrl,'au/'),3);
 		if(file_exists ($folder_name)):
 			else:
 			mkdir ("../temp/".$folder_name, 0777);

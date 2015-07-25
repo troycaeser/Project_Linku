@@ -16,14 +16,14 @@ $(document).ready(function(){
 					obj_links[key] = value;
 				});
 
-				getHTML(input, obj_links);
+				getHTML(input, obj_links, input);
 			})
 			.done(function(data){
 				console.info('links completed');
 			});
 	});
 
-	function setJson(obj_links){
+	function setJson(obj_links, input_url){
 		var bed = $('.rui-icon-bed').next().text();
 		var bath = $('.rui-icon-bath').next().text();
 		var car = $('.rui-icon-car').next().text();
@@ -39,6 +39,7 @@ $(document).ready(function(){
 		var auction_time = auction_date.substring(9, auction_date.indexOf("Save"));
 
 		var json_data = {
+			url: input_url,
 			bed_no: bed,
 			bath_no: bath,
 			car_no: car,
@@ -62,7 +63,7 @@ $(document).ready(function(){
 		});
 	}
 
-	function getHTML(input, obj_links){
+	function getHTML(input, obj_links, input_url){
 		$.post("php/json.php",
 		{
 			input_url: input
@@ -74,7 +75,7 @@ $(document).ready(function(){
 				console.error(e);
 			}
 			finally{
-				setJson(obj_links);
+				setJson(obj_links, input_url);
 
 				$('.temporary_output').children().remove();
 			}

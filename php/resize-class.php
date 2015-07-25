@@ -203,19 +203,31 @@
 
 			## --------------------------------------------------------
 			
-			public function addWatermarks($logo, $bottom, $bed, $photo){
+			public function addWatermarks(
+									$logo,
+									$bottom,
+									$bed,
+									$bed_num,
+									$bath,
+									$bath_num,
+									$car,
+									$car_num,
+									$photo){
 
 				//LOGO
 				// Load the stamp and the photo to apply the watermark to
 				$stamp_logo = imagecreatefrompng($logo);
 				$stamp_bottom = imagecreatefromjpeg($bottom);
 				$stamp_bed = imagecreatefrompng($bed);
-				$stamp_bed_no = $bed_no;
-				// $font = '../bin/chisholm_gamon/museo500.ttf';
-
+				$stamp_bed_no = $bed_num;
+				$stamp_bath = imagecreatefrompng($bath);
+				$stamp_bath_no = $bath_num;
+				$stamp_car = imagecreatefrompng($car);
+				$stamp_car_no = $car_num;
+				$font = '../bin/chisholm_gamon/museo500.ttf';
 
 				$im = imagecreatefromjpeg($photo);
-				$black = imagecolorallocate($im, 0, 0, 0);
+				$color = imagecolorallocate($im, 255, 255, 255);
 
 				// Set the margins for the stamp
 				$marge_right = 5;
@@ -255,23 +267,64 @@
 				imagecopy(
 					$im,
 					$stamp_bed,
-					10,
+					32,
 					imagesy($im) - $bottom_y,
 					0, 0,
 					imagesx($stamp_bed),
 					imagesy($stamp_bed));
 
 				//add bed_no
-				// imagettftext(
-				// 	$im,
-				// 	20,
-				// 	0,
-				// 	10,
-				// 	20,
-				// 	$black,
-				// 	$font,
-				// 	"4"
-				// 	);
+				imagettftext(
+					$im,
+					20,
+					0,
+					32 + imagesx($stamp_bed) + 25,
+					imagesy($im) - 6,
+					$color,
+					$font,
+					$stamp_bed_no);
+
+				//add bath
+				imagecopy(
+					$im,
+					$stamp_bath,
+					32 + imagesx($stamp_bed) + 60,
+					imagesy($im) - $bottom_y,
+					0, 0,
+					imagesx($stamp_bath),
+					imagesy($stamp_bath));
+
+				//add bath_no
+				imagettftext(
+					$im,
+					20,
+					0,
+					25 + imagesx($stamp_bed) + 60 + imagesx($stamp_bath) + 25,
+					imagesy($im) - 6,
+					$color,
+					$font,
+					$stamp_bath_no);
+
+				//add car
+				imagecopy(
+					$im,
+					$stamp_car,
+					25 + imagesx($stamp_bed) + 60 + imagesx($stamp_bath) + 60,
+					imagesy($im) - $bottom_y,
+					0, 0,
+					imagesx($stamp_car),
+					imagesy($stamp_car));
+
+				//add car_no
+				imagettftext(
+					$im,
+					20,
+					0,
+					25 + imagesx($stamp_bed) + 60 + imagesx($stamp_bath) + 60 + imagesx($stamp_car) + 25,
+					imagesy($im) - 6,
+					$color,
+					$font,
+					$stamp_car_no);
 
 				// Output and free memory
 				imagejpeg($im, $photo, 100);

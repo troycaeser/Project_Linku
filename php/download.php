@@ -1,36 +1,29 @@
 <?php
 	require 'resize.php';
-	// include 'main.php';
-	// download_img($final, $name, $i);
 
-	// $decoded_json = json_decode($_POST['links']);
-	// $stuff = json_decode($_POST['links']);
-	// echo $_POST['links'][3];
 	$url;
 	$reqUrl = $_POST['url'];
 	$final = substr(strstr($reqUrl,'au/'),3);
 
+	//crawled variables
+	$bed_no = $_POST['bed_no'];
+	$bath_no = $_POST['bath_no'];
+	$car_no = $_POST['car_no'];
+
 	for($i = 1; $i<=count($_POST['links']); $i++){
 		$url = $_POST['links'][$i];
-		// echo $url;
 
-		download_img($url, $final, $i);
+		download_img(
+			$url,
+			$final,
+			$i,
+			$bed_no,
+			$bath_no,
+			$car_no
+		);
 	}
 
-	// function download_img($url, $name){
-
-	// 	//get the file
-	// 	$content = file_get_contents($url);
-
-	// 	//save locally
-	// 	$fp = fopen("../temp/blah/".$name.".jpg", 'wb');
-	// 	fwrite($fp, $content);
-	// 	fclose($fp);
-
-	// 	resize_img("../temp/blah/".$name.".jpg", $name);
-	// }
-
-	function download_img($url, $dir, $name){
+	function download_img($url, $dir, $name, $bed_num, $bath_num, $car_num){
 
 		//get the file
 		$content = file_get_contents($url);
@@ -40,7 +33,14 @@
 		fwrite($fp, $content);
 		fclose($fp);
 
-		resize_img("../temp/".$dir."/".$name.".jpg", $name, $dir);
+		resize_img(
+			"../temp/".$dir."/".$name.".jpg",
+			$name,
+			$dir,
+			$bed_num,
+			$bath_num,
+			$car_num
+		);
 	}
 
 ?>

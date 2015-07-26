@@ -74,7 +74,9 @@
 
 				// *** Resample - create image canvas of x, y size
 				$this->imageResized = imagecreatetruecolor($optimalWidth, $optimalHeight);
-				imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height);
+
+				//the 32 at the end means the "bottom" size of the image. Its just blank space.
+				imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height + 32);
 
 
 				// *** if option is 'crop', then crop too

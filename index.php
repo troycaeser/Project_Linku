@@ -1,12 +1,14 @@
 <?php
 
 $rez = google_search_api(array(
-    'q' => '3/3 Stradbroke Street Oakleigh South Vic 3167', // 查询内容
+    'q' => '8 Church Street West Footscray site:www.realestate.com.au', // 查询内容
     'userip' => '127.0.0.1',
  ));
 header('Content-type: text/html; charset=utf-8;');
 echo '<xmp>';
-print_r($rez);
+ print_r($rez->{'responseData'}->{'results'}['0']->{'url'});
+// print_r($rez->{'responseData'}->{'results'}['0']);
+//print_r($rez->{'responseData'});
 echo '</xmp>';
 
 function google_search_api($args, $referer = 'http:/www.realestate.com.au/', $endpoint = 'web'){

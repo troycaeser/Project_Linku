@@ -34,6 +34,7 @@ $(document).ready(function(){
 		var addressLocality = $("span[itemprop='addressLocality']").text();
 
 		var agent = $('.agencyName').text();
+		var agent_name = $('#agentContactInfo').children().first().text();
 
 		var auction_date = $('.auctionDetails').children().text();
 		var auction_time = auction_date.substring(9, auction_date.indexOf("Save"));
@@ -48,10 +49,12 @@ $(document).ready(function(){
 			suburb: addressLocality,
 			agency: agent,
 			auction: auction_time,
-			links: obj_links
+			links: obj_links,
+			agent_name: agent_name
 		}
 
 		console.log(json_data);
+		// console.log(agent_name);
 
 		getJson(json_data);
 	}

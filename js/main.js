@@ -36,20 +36,29 @@ $(document).ready(function(){
 		var agent = $('.agencyName').text();
 		var agent_name = $('#agentContactInfo').children().first().text();
 
+		var auction_time = "stuff";
 		var auction_date = $('.auctionDetails').children().text();
-		var auction = auction_date.substring(9, auction_date.indexOf("Save"));
-		var auction_regex = /([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?(?:AM|PM)?$/i;
-		var auction_extracted = auction_regex.exec(auction)[0];
-		var auction_condition = auction_extracted.substr(auction_extracted.indexOf(":") + 1, 2);
-		var auction_time;
 
-		if(auction_condition == '00'){
-			auction_time = auction_extracted.replace(':00', '').toLowerCase();
+
+		if(auction_date == ''){
 			console.log(auction_time);
-		}else{
-			auction_time = auction_extracted.toLowerCase();
 		}
+		else{
+			var auction = auction_date.substring(9, auction_date.indexOf("Save"));
+			var auction_regex = /([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?(?:AM|PM)?$/i;
+			var auction_extracted = auction_regex.exec(auction)[0];
+			var auction_condition = auction_extracted.substr(auction_extracted.indexOf(":") + 1, 2);
+			var auction_time;
 
+			if(auction_condition == '00'){
+				auction_time = auction_extracted.replace(':00', '').toLowerCase();
+				console.log(auction_time);
+			}else{
+				auction_time = auction_extracted.toLowerCase();
+			}
+
+			console.log(auction_time);
+		}
 
 		var json_data = {
 			url: input_url,

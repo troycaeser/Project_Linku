@@ -63,7 +63,7 @@
 
 			## --------------------------------------------------------
 
-			public function resizeImage($newWidth, $newHeight, $option="auto")
+			public function resizeImage($newWidth, $newHeight, $option="auto", $name)
 			{
 				// *** Get optimal width and height - based on $option
 				$optionArray = $this->getDimensions($newWidth, $newHeight, $option);
@@ -76,8 +76,11 @@
 				$this->imageResized = imagecreatetruecolor($optimalWidth, $optimalHeight);
 
 				//the 32 at the end means the "bottom" size of the image. Its just blank space.
-				// imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height);
-				imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height + 70);
+				if($name == '1'){
+					imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height + 70);
+				}else{
+					imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height);
+				}
 
 
 				// *** if option is 'crop', then crop too
@@ -206,7 +209,7 @@
 
 			## --------------------------------------------------------
 			
-			public function addWatermarks(
+			public function mainImageManipulate(
 									$logo,
 									$bottom,
 									$bed,
@@ -247,7 +250,7 @@
 				$logo_y = imagesy($stamp_logo);
 
 				//bottom_height/width
-				$bottom_x = imagesx($stamp_bottom);
+				// $bottom_x = imagesx($stamp_bottom);
 				$bottom_y = imagesy($stamp_bottom);
 
 				// Copy the stamp image onto our photo using the margin offsets and the photo 
@@ -276,7 +279,7 @@
 				imagecopy(
 					$im,
 					$stamp_bed,
-					32,
+					25,
 					imagesy($im) - $bottom_y,
 					0, 0,
 					imagesx($stamp_bed),
@@ -287,7 +290,7 @@
 					$im,
 					20,
 					0,
-					32 + imagesx($stamp_bed) + 25,
+					25 + imagesx($stamp_bed) + 25,
 					imagesy($im) - 6,
 					$color,
 					$font,
@@ -297,7 +300,7 @@
 				imagecopy(
 					$im,
 					$stamp_bath,
-					32 + imagesx($stamp_bed) + 60,
+					25 + imagesx($stamp_bed) + 60,
 					imagesy($im) - $bottom_y,
 					0, 0,
 					imagesx($stamp_bath),
@@ -345,49 +348,55 @@
 					imagesx($stamp_banner),
 					imagesy($stamp_banner));
 
-				//add bounding box
-				$size = imagettfbbox(10, 45, $font, $stamp_auction);
+				if(strlen($auction_time) == 4){
+					//add the first line in the banner
+					imagettftext($im, 20, 43.5, 13, 115, $color, $font, $stamp_auction);
 
-				// This is our cordinates for X and Y
-				$xsize = abs($size[4] - $size[0]);
-				$ysize = abs($size[5] - $box[1]);
+					//add second line in the banner
+					imagettftext($im, 20, 43.5, 15, 148, $color, $font, $stamp_auction_time);
 
-				// $new_text = wordwrap($stamp_auction, 20, "\n");
+				}else if(strlen($auction_time) == 6){
+					//add the first line in the banner
+					imagettftext($im, 19, 43.5, 13, 115, $color, $font, $stamp_auction);
 
-				//figure out how to justify your texts and following the link below
-				//http://php.net/manual/en/function.imagettftext.php
-				//cmd + f spacing
+					//add the second line in the banner
+					imagettftext($im, 19, 43.5, 12, 150, $color, $font, $stamp_auction_time);
 
-				// add auction time
-				// $this->imagettftextjustified(
-				// 	$im,
-				// 	20,
-				// 	0,
-				// 	0,
-				// 	50,
-				// 	$color,
-				// 	$font,
-				// 	$stamp_auction,
-				// 	230, $minspacing = 3, $linespacing = 1);
-				imagettftext(
+				}else if(strlen($auction_time) == 7){
+					//add the first line in the banner
+					imagettftext($im, 20, 43.5, 13, 115, $color, $font, $stamp_auction);
+
+					//add the second line in the banner
+					imagettftext($im, 19, 43.5, 10, 155, $color, $font, $stamp_auction_time);
+				}
+
+				// Output and free memory
+				imagejpeg($im, $photo, 100);
+
+				imagedestroy($im);
+			}
+
+			public function secondaryImageManipulate($logo, $photo){
+				$stamp_logo = imagecreatefrompng($logo);
+				$im = imagecreatefromjpeg($photo);
+
+				//logo_height/width
+				$logo_x = imagesx($stamp_logo);
+				$logo_y = imagesy($stamp_logo);
+
+				// Set the margins for the stamp
+				$marge_right = 5;
+				$marge_bottom = 5;
+
+				//add logo
+				imagecopy(
 					$im,
-					19,
-					43.5,
-					13,
-					115,
-					$color,
-					$font,
-					$stamp_auction);
-
-				imagettftext(
-					$im,
-					19,
-					43.5,
-					10,
-					155,
-					$color,
-					$font,
-					$stamp_auction_time);
+					$stamp_logo,
+					imagesx($im) - $logo_x - $marge_right,
+					imagesy($im) - $logo_y - $marge_bottom,
+					0, 0,
+					imagesx($stamp_logo),
+					imagesy($stamp_logo));
 
 				// Output and free memory
 				imagejpeg($im, $photo, 100);

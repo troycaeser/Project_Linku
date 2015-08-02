@@ -16,28 +16,30 @@ $(document).ready(function(){
 					obj_links[key] = value;
 				});
 
-				getHTML(input, obj_links, input);
+				getHTML(input, obj_links);
 			})
 			.done(function(data){
 				console.info('links completed');
 			});
 	});
 
-	function setJson(obj_links, input_url){
-		var bed = $('.rui-icon-bed').next().text();
-		var bath = $('.rui-icon-bath').next().text();
-		var car = $('.rui-icon-car').next().text();
-		var price = $('.price').children().first().text();
-		var streetAddress = $("span[itemprop='streetAddress']").text();
+	function setJson(obj_links, input_url, html){
+		// html.find('.rui-icon-bed').next().text();
+
+		var bed = html.find('.rui-icon-bed').next().text();
+		var bath = html.find('.rui-icon-bath').next().text();
+		var car = html.find('.rui-icon-car').next().text();
+		var price = html.find('.price').children().first().text();
+		var streetAddress = html.find("span[itemprop='streetAddress']").text();
 
 		//addressLocality needs to be capital
-		var addressLocality = $("span[itemprop='addressLocality']").text();
+		var addressLocality = html.find("span[itemprop='addressLocality']").text();
 
-		var agent = $('.agencyName').text();
-		var agent_name = $('#agentContactInfo').children().first().text();
+		var agent = html.find('.agencyName').text();
+		var agent_name = html.find('#agentContactInfo').children().first().text();
 
 		var auction_time = "stuff";
-		var auction_date = $('.auctionDetails').children().text();
+		var auction_date = html.find('.auctionDetails').children().text();
 
 
 		if(auction_date == ''){
@@ -52,12 +54,12 @@ $(document).ready(function(){
 
 			if(auction_condition == '00'){
 				auction_time = auction_extracted.replace(':00', '').toLowerCase();
-				console.log(auction_time);
+				// console.log(auction_time);
 			}else{
 				auction_time = auction_extracted.toLowerCase();
 			}
 
-			console.log(auction_time);
+			// console.log(auction_time);
 		}
 
 		var json_data = {
@@ -83,27 +85,42 @@ $(document).ready(function(){
 	
 	function getJson(json){
 		$.post("php/download.php", json)
-			.then(function(data){
+			.then(function(data){				
 				console.log(data);
+				$('.kxhead').remove();
+				$('.temporary').remove();
+				$('head').children().find('script').remove();
+				$('.temporary_output').append("<div class='temporary'></div>");
 		});
 	}
 
-	function getHTML(input, obj_links, input_url){
+	function getHTML(input, obj_links){
 		$.post("php/json.php",
 		{
 			input_url: input
 		})
 		.then(function(data){
-			try{
-				$('.temporary_output').html(data);
-			}catch(e){
-				console.error(e);
-			}
-			finally{
-				setJson(obj_links, input_url);
+			alert("line 101");
+			var html = $(data);
+			html.find('script').remove();
+			setJson(obj_links, input, html);
 
-				$('.temporary_output').children().remove();
-			}
+			// try{
+			// 	var stuff = html.find('.rui-icon-bed').next().text();
+			// 	console.log(stuff);
+			// 	// alert("before html is appended");
+			// 	// $('.temporary').html(html);
+
+			// 	//something is wrong here won't append and fucks HTML up bro!
+			// 	// alert("after html is appended");
+			// }catch(e){
+			// 	console.error(e);
+			// }
+			// finally{
+			// 	setJson(obj_links, input, data);
+			// 	// $('.temporary').remove();
+			// 	// $('.temporary_output').append("<div class='temporary'></div>");
+			// }
 		});
 	}
 });

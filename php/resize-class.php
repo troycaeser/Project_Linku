@@ -76,7 +76,8 @@
 				$this->imageResized = imagecreatetruecolor($optimalWidth, $optimalHeight);
 
 				//the 32 at the end means the "bottom" size of the image. Its just blank space.
-				imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height + 32);
+				// imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height);
+				imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height + 70);
 
 
 				// *** if option is 'crop', then crop too
@@ -214,6 +215,8 @@
 									$bath_num,
 									$car,
 									$car_num,
+									$banner,
+									$auction_time,
 									$photo){
 
 				//LOGO
@@ -226,6 +229,10 @@
 				$stamp_bath_no = $bath_num;
 				$stamp_car = imagecreatefrompng($car);
 				$stamp_car_no = $car_num;
+				$stamp_banner = imagecreatefrompng($banner);
+				$stamp_auction = 'Auction this';
+				$stamp_auction_time = 'Saturday '.$auction_time;
+
 				$font = '../bin/chisholm_gamon/museo500.ttf';
 
 				$im = imagecreatefromjpeg($photo);
@@ -327,6 +334,60 @@
 					$color,
 					$font,
 					$stamp_car_no);
+
+				//add Banner
+				imagecopy(
+					$im,
+					$stamp_banner,
+					0,
+					0,
+					0, 0,
+					imagesx($stamp_banner),
+					imagesy($stamp_banner));
+
+				//add bounding box
+				$size = imagettfbbox(10, 45, $font, $stamp_auction);
+
+				// This is our cordinates for X and Y
+				$xsize = abs($size[4] - $size[0]);
+				$ysize = abs($size[5] - $box[1]);
+
+				// $new_text = wordwrap($stamp_auction, 20, "\n");
+
+				//figure out how to justify your texts and following the link below
+				//http://php.net/manual/en/function.imagettftext.php
+				//cmd + f spacing
+
+				// add auction time
+				// $this->imagettftextjustified(
+				// 	$im,
+				// 	20,
+				// 	0,
+				// 	0,
+				// 	50,
+				// 	$color,
+				// 	$font,
+				// 	$stamp_auction,
+				// 	230, $minspacing = 3, $linespacing = 1);
+				imagettftext(
+					$im,
+					19,
+					43.5,
+					13,
+					115,
+					$color,
+					$font,
+					$stamp_auction);
+
+				imagettftext(
+					$im,
+					19,
+					43.5,
+					10,
+					155,
+					$color,
+					$font,
+					$stamp_auction_time);
 
 				// Output and free memory
 				imagejpeg($im, $photo, 100);

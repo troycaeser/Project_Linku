@@ -37,7 +37,19 @@ $(document).ready(function(){
 		var agent_name = $('#agentContactInfo').children().first().text();
 
 		var auction_date = $('.auctionDetails').children().text();
-		var auction_time = auction_date.substring(9, auction_date.indexOf("Save"));
+		var auction = auction_date.substring(9, auction_date.indexOf("Save"));
+		var auction_regex = /([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?(?:AM|PM)?$/i;
+		var auction_extracted = auction_regex.exec(auction)[0];
+		var auction_condition = auction_extracted.substr(auction_extracted.indexOf(":") + 1, 2);
+		var auction_time;
+
+		if(auction_condition == '00'){
+			auction_time = auction_extracted.replace(':00', '').toLowerCase();
+			console.log(auction_time);
+		}else{
+			auction_time = auction_extracted.toLowerCase();
+		}
+
 
 		var json_data = {
 			url: input_url,
@@ -53,6 +65,7 @@ $(document).ready(function(){
 			agent_name: agent_name
 		}
 
+		// console.log(auction_regex.exec(auction_time)[0]);
 		console.log(json_data);
 		// console.log(agent_name);
 

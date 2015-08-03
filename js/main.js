@@ -39,17 +39,28 @@ $(document).ready(function(){
 		var agent_name = html.find('#agentContactInfo').children().first().text();
 
 		var auction_time = "stuff";
-		var auction_date = html.find('.auctionDetails').children().text();
+		var auction_string = html.find('.auctionDetails').children().text();
+		// console.log('this is auction date bro: ' + auction_string);
 
 
-		if(auction_date == ''){
+		if(auction_string == ''){
 			console.log(auction_time);
 		}
 		else{
-			var auction = auction_date.substring(9, auction_date.indexOf("Save"));
+			var auction = auction_string.substring(9, auction_string.indexOf("Save"));
 			var auction_regex = /([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?(?:AM|PM)?$/i;
 			var auction_extracted = auction_regex.exec(auction)[0];
 			var auction_condition = auction_extracted.substr(auction_extracted.indexOf(":") + 1, 2);
+			var auction_date_min = $.trim(auction_string.substr(auction_string.indexOf(":")+1, 5));
+			var auction_date;
+
+			if(auction_date_min == 'Wed'){
+				auction_date = 'Wednesday';
+			}
+			else if(auction_date_min == 'Sat'){
+				auction_date = 'Saturday'
+			}
+			// console.log(auction_date);
 			var auction_time;
 
 			if(auction_condition == '00'){
@@ -72,6 +83,7 @@ $(document).ready(function(){
 			suburb: addressLocality,
 			agency: agent,
 			auction: auction_time,
+			auction_date: auction_date,
 			links: obj_links,
 			agent_name: agent_name
 		}
@@ -100,7 +112,7 @@ $(document).ready(function(){
 			input_url: input
 		})
 		.then(function(data){
-			alert("line 101");
+			// alert("line 101");
 			var html = $(data);
 			html.find('script').remove();
 			setJson(obj_links, input, html);

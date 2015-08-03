@@ -220,6 +220,7 @@
 									$car_num,
 									$banner,
 									$auction_time,
+									$auction_date,
 									$photo){
 
 				//LOGO
@@ -234,7 +235,7 @@
 				$stamp_car_no = $car_num;
 				$stamp_banner = imagecreatefrompng($banner);
 				$stamp_auction = 'Auction this';
-				$stamp_auction_time = 'Saturday '.$auction_time;
+				$stamp_auction_time = $auction_date." ".$auction_time;
 
 				$font = '../bin/chisholm_gamon/museo500.ttf';
 
@@ -348,7 +349,7 @@
 					imagesx($stamp_banner),
 					imagesy($stamp_banner));
 
-				if(strlen($auction_time) == 4){
+				if(strlen($auction_time) == 4 || strlen($auction_time) == 3){
 					//add the first line in the banner
 					imagettftext($im, 20, 43.5, 13, 115, $color, $font, $stamp_auction);
 
@@ -392,8 +393,8 @@
 				imagecopy(
 					$im,
 					$stamp_logo,
-					imagesx($im) - $logo_x - $marge_right,
-					imagesy($im) - $logo_y - $marge_bottom,
+					imagesx($im) - $logo_x,
+					imagesy($im) - $logo_y,
 					0, 0,
 					imagesx($stamp_logo),
 					imagesy($stamp_logo));

@@ -69,28 +69,26 @@ $(document).ready(function(){
 			}else{
 				auction_time = auction_extracted.toLowerCase();
 			}
-
-			// console.log(auction_time);
 		}
 
 		var json_data = {
-			url: input_url,
-			bed_no: bed,
-			bath_no: bath,
-			car_no: car,
-			ppt_price: price,
-			street: streetAddress,
-			suburb: addressLocality,
-			agency: agent,
-			auction: auction_time,
-			auction_date: auction_date,
-			links: obj_links,
-			agent_name: agent_name
+			ob_data: {
+				url: input_url,
+				bed_no: bed,
+				bath_no: bath,
+				car_no: car,
+				ppt_price: price,
+				street: streetAddress,
+				suburb: addressLocality,
+				agency: agent,
+				auction: auction_time,
+				auction_date: auction_date,
+				links: obj_links,
+				agent_name: agent_name
+			}
 		}
 
-		// console.log(auction_regex.exec(auction_time)[0]);
 		console.log(json_data);
-		// console.log(agent_name);
 
 		getJson(json_data);
 	}
@@ -99,40 +97,22 @@ $(document).ready(function(){
 		$.post("php/download.php", json)
 			.then(function(data){				
 				console.log(data);
-				$('.kxhead').remove();
-				$('.temporary').remove();
-				$('head').children().find('script').remove();
-				$('.temporary_output').append("<div class='temporary'></div>");
+				// $('.kxhead').remove();
+				// $('.temporary').remove();
+				// $('head').children().find('script').remove();
+				// $('.temporary_output').append("<div class='temporary'></div>");
 		});
 	}
 
 	function getHTML(input, obj_links){
-		$.post("php/json.php",
+		$.post("php/crawl.php",
 		{
 			input_url: input
 		})
 		.then(function(data){
-			// alert("line 101");
 			var html = $(data);
-			html.find('script').remove();
+			// html.find('script').remove();
 			setJson(obj_links, input, html);
-
-			// try{
-			// 	var stuff = html.find('.rui-icon-bed').next().text();
-			// 	console.log(stuff);
-			// 	// alert("before html is appended");
-			// 	// $('.temporary').html(html);
-
-			// 	//something is wrong here won't append and fucks HTML up bro!
-			// 	// alert("after html is appended");
-			// }catch(e){
-			// 	console.error(e);
-			// }
-			// finally{
-			// 	setJson(obj_links, input, data);
-			// 	// $('.temporary').remove();
-			// 	// $('.temporary_output').append("<div class='temporary'></div>");
-			// }
 		});
 	}
 });

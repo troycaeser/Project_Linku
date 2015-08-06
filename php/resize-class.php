@@ -208,6 +208,20 @@
 			}
 
 			## --------------------------------------------------------
+
+			private function add_logo($im, $logo, $margin_x, $margin_y){
+				$stamp_logo = imagecreatefrompng($logo);
+				$img_w = imagesx($im);
+
+				$src_w = imagesx($stamp_logo);
+				$src_h = imagesy($stamp_logo);
+
+				$dst_x = $img_w - $src_w - $margin_x;
+				$dst_y = $margin_y;
+
+				//add logo
+				imagecopy($im, $stamp_logo, $dst_x, $dst_y, 0, 0, $src_w, $src_h);
+			}
 			
 			public function mainImageManipulate(
 									$logo,
@@ -221,6 +235,7 @@
 									$banner,
 									$auction_time,
 									$auction_date,
+									$logo_margin_x,
 									$photo){
 
 				//LOGO
@@ -257,14 +272,7 @@
 				// Copy the stamp image onto our photo using the margin offsets and the photo 
 				// width to calculate positioning of the stamp. 
 				//add logo
-				imagecopy(
-					$im,
-					$stamp_logo,
-					imagesx($im) - $logo_x - $marge_right,
-					$marge_bottom,
-					0, 0,
-					imagesx($stamp_logo),
-					imagesy($stamp_logo));
+				$this->add_logo($im, $logo, $logo_margin_x, $marge_bottom);
 
 				//add bottom
 				imagecopy(
@@ -371,10 +379,8 @@
 					imagettftext($im, 19, 43.5, 10, 155, $color, $font, $stamp_auction_time);
 				}
 
-				// Output and free memory
-				imagejpeg($im, $photo, 100);
-
-				imagedestroy($im);
+				//saves the image
+				$this->outputImage($im, $photo);
 			}
 
 			public function secondaryImageManipulate($logo, $photo){
@@ -399,7 +405,11 @@
 					imagesx($stamp_logo),
 					imagesy($stamp_logo));
 
-				// Output and free memory
+				//saves the image
+				$this->outputImage($im, $photo);
+			}
+
+			private function outputImage($im, $photo){
 				imagejpeg($im, $photo, 100);
 
 				imagedestroy($im);

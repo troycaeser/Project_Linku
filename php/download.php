@@ -1,16 +1,27 @@
 <?php
 	require 'resize.php';
+	require 'manifest.php';
 
-	$url;
-	$reqUrl = $_POST['url'];
-	$final = substr(strstr($reqUrl,'au/'),3);
+	//The json data sent from main.js
+	$request_data = $_POST['ob_data'];
+	// $request = json_encode($ob_data);
+
+	$reqUrl = $request_data['url'];
+	$final = substr(strstr($reqUrl,'au/'), 3);
+
+	// foreach($request_data as $key => $value){
+	// 	echo $request_data['bed_no'];
+	// 	// echo $value->['bath_no'];
+	// }
+
+	// print_r($request_data->bed_no);
 
 	//crawled variables
-	$bed_no = $_POST['bed_no'];
-	$bath_no = $_POST['bath_no'];
-	$car_no = $_POST['car_no'];
-	$auction_time = $_POST['auction'];
-	$auction_date = $_POST['auction_date'];
+	$bed_no = $request_data['bed_no'];
+	$bath_no = $request_data['bath_no'];
+	$car_no = $request_data['car_no'];
+	$auction_time = $request_data['auction'];
+	$auction_date = $request_data['auction_date'];
 
 	$data[0] = $bed_no;
 	$data[1] = $bath_no;
@@ -18,15 +29,10 @@
 	$data[3] = $auction_time;
 	$data[4] = $auction_date;
 
-	for($i = 1; $i<=count($_POST['links']); $i++){
-		$url = $_POST['links'][$i];
+	for($i = 1; $i<=count($request_data['links']); $i++){
+		$url = $request_data['links'][$i];
 
-		download_img(
-			$url,
-			$final,
-			$i,
-			$data
-		);
+		download_img($url, $final, $i, $data);
 	}
 
 	function download_img($url, $dir, $name, $data){

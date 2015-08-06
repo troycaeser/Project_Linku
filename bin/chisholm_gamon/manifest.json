@@ -1,0 +1,14 @@
+{
+	"main":{
+		"logo":{
+			"margin_x" : 75,
+			"margin_y" : 5
+		}
+	},
+	"other":{
+		"logo":{
+			"margin_x" : 5,
+			"margin_y" : 5
+		}
+	}
+}

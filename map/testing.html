@@ -1,0 +1,79 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script
+src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+</script>
+
+<script>
+var myCenter;
+
+$(document).ready(function(){
+	var lat, lng;
+	$.get("https://maps.googleapis.com/maps/api/geocode/json?address=1178northroadoakleighsouth&key=AIzaSyAGtckgkhuv7mnX0skyV1uSgrwubWgKLZE", function(data){
+		lat = data.results[0].geometry.location.lat;
+
+		lng = data.results[0].geometry.location.lng;
+
+
+		returnMap(lat, lng);
+	})
+
+function returnMap(lat, lng){
+
+	console.log(lat);
+	console.log(lng);
+
+	myCenter=new google.maps.LatLng(lat, lng);
+}
+
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:17,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+var iconBase = 'icons/';
+var icons = {
+	parking:{
+		icon: iconBase + 'tram.png'
+	}
+ }
+
+  //addMarker('parking');
+
+   //function addMarker(feature) {
+  var marker2 = new google.maps.Marker({
+    position: feature.position,
+     icon: icons[feature.type].icon,
+    //icon: iconBase + 'tram.png',
+    map: map
+  });
+  //}
+
+var marker=new google.maps.Marker({
+  position:myCenter,
+  map:map,
+  icon:iconBase + 'home.png'
+  });
+
+marker.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+});
+</script>
+</head>
+
+<body>
+<div id="googleMap" style="width:800px;height:800px;"></div>
+
+</body>
+</html>
+			

@@ -357,7 +357,14 @@
 					imagesx($stamp_banner),
 					imagesy($stamp_banner));
 
-				if(strlen($auction_time) == 4 || strlen($auction_time) == 3){
+				if(strlen($auction_time) == 3){
+					//add the first line in the banner
+					imagettftext($im, 20, 43.5, 13, 115, $color, $font, $stamp_auction);
+
+					//add second line in the banner
+					imagettftext($im, 20, 43.5, 23, 143, $color, $font, $stamp_auction_time);
+				}
+				else if(strlen($auction_time) == 4 || strlen($auction_time) == 3){
 					//add the first line in the banner
 					imagettftext($im, 20, 43.5, 13, 115, $color, $font, $stamp_auction);
 

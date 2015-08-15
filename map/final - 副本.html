@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVnqflcGtO1qkObjMnbo3qZV5O3ZTCQgM">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+         var styles = [
+{
+ "featureType": "poi",
+ "elementType": "labels",
+ "stylers": [
+{ "visibility": "off" }
+ ]
+ },{
+
+   "featureType": "transit",
+    "stylers": [
+   { "visibility": "off" }
+   ]
+
+      },{
+    }
+
+   ];
+
+   var myLatlng = new google.maps.LatLng(30.452636,-91.107285);
+   var mapOptions = {
+   center: myLatlng,
+   zoom: 13,
+   scrollwheel: false,
+ };
+
+
+
+ var locations = [
+['<div class="dealerinfobox"><span class="dealername"><strong>Richards Honda</strong></span><br />7791 Florida Boulevard Baton Rouge, LA 70806</div><a target="_blank" class="directionslink button small-button" href="https://www.google.com/maps/dir//Richards+Honda/@30.452314,-91.107482,15z/">Get Directions</a>', 30.452636,-91.107285,'/path/to/folder/images/map-marker.png'],
+
+['<div class="dealerinfobox"><span class="dealername"><strong>Broadmoor/Sherwood Forest</strong></span><br />2 Miles</div>', 30.4455406,-91.0385525,'/path/to/folder/images/poi-marker.png'],
+
+['<div class="dealerinfobox"><span class="dealername"><strong>College Drive</strong></span><br /></div>', 30.4281267,-91.1363998,'/path/to/folder/images/poi-marker.png'],
+
+var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+
+
+var infowindow = new google.maps.InfoWindow();
+var marker, i;
+
+for (i = 0; i < locations.length; i++) {
+marker = new google.maps.Marker({
+position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+map: map,
+icon: locations[i][3]
+});
+
+ google.maps.event.addListener(marker, 'click', (function(marker, i) {
+  return function() {
+  infowindow.setContent(locations[i][0]);
+  infowindow.open(map, marker);
+  }
+ })(marker, i));
+}
+
+
+ map.setOptions({styles: styles});
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+<div id="map-canvas"></div>
+  </body>
+</html>

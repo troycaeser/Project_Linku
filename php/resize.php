@@ -20,22 +20,6 @@
 		$resizeObj -> saveImage('../temp/'.$dir."/".$name.'.jpg', 100);
 
 
-		//play
-
-		/get agent template manifest
-		manipulate
-		'../bin/'.data[4].'/manifest.json'
-
-
-
-
-
-
-		//
-
-
-
-
 		if($name == '1'){
 			// add watermark.
 			$resizeObj -> mainImageManipulate(
